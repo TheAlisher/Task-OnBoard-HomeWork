@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, FormActivity.class));
+                startActivityForResult(new Intent(MainActivity.this, FormActivity.class), 100);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
