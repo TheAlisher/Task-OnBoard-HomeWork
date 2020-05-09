@@ -1,10 +1,13 @@
 package com.example.task_onboard_homework.ui.onboard;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,12 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.task_onboard_homework.MainActivity;
 import com.example.task_onboard_homework.R;
-
-import static android.R.id.home;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +47,8 @@ public class BoardFragment extends Fragment {
         TextView textHeading = view.findViewById(R.id.textHeading);
         TextView textDescription = view.findViewById(R.id.textDescription);
         Button getStart = view.findViewById(R.id.button_GetStarted);
+        ConstraintLayout fragmentBoard = view.findViewById(R.id.fragment_board);
+
         switch (pos) {
             case 0:
                 imageView.setImageResource(R.drawable.image_apple_tv);
@@ -54,6 +58,7 @@ public class BoardFragment extends Fragment {
                         "брать напрокат и смотреть в одном приложении. " +
                         "В нём же вы найдёте то, что приобрели ранее в iTunes.");
                 getStart.setVisibility(View.GONE);
+                fragmentBoard.setBackgroundResource(R.drawable.image_stories_1);
                 break;
             case 1:
                 imageView.setImageResource(R.drawable.image_apple_tv_plus);
@@ -62,6 +67,7 @@ public class BoardFragment extends Fragment {
                         "это признанные критиками оригинальные фильмы и сериалы от Apple, " +
                         "только в одном приложении Apple TV");
                 getStart.setVisibility(View.GONE);
+                fragmentBoard.setBackgroundResource(R.drawable.image_stories_15);
                 break;
             case 2:
                 textHeading.setText("Приложение Apple TV");
@@ -70,11 +76,20 @@ public class BoardFragment extends Fragment {
                 getStart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        saveIsShown();
+                        /*Intent intent = new Intent(getContext(), MainActivity.class);
+                        startActivity(intent);*/
                         getActivity().finish();
                     }
                 });
+                fragmentBoard.setBackgroundResource(R.drawable.image_stories_6);
                 break;
         }
+    }
+
+    private void saveIsShown() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        preferences.edit().putBoolean("isShown", true).apply();
     }
 
 }
