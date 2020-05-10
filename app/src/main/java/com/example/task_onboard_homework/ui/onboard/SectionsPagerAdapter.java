@@ -1,6 +1,5 @@
 package com.example.task_onboard_homework.ui.onboard;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;

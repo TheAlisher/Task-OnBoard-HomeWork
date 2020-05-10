@@ -3,12 +3,10 @@ package com.example.task_onboard_homework.ui.onboard;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.task_onboard_homework.MainActivity;
 import com.example.task_onboard_homework.R;
 import com.google.android.material.tabs.TabLayout;
 
