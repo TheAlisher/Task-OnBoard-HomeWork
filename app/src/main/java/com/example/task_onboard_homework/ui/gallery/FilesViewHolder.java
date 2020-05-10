@@ -12,14 +12,14 @@ import java.io.File;
 
 public class FilesViewHolder extends RecyclerView.ViewHolder {
 
-    TextView textHeading;
+    TextView textGallery;
 
     public FilesViewHolder(@NonNull View itemView) {
         super(itemView);
-        textHeading = itemView.findViewById(R.id.textHeading);
+        textGallery = itemView.findViewById(R.id.text_gallery);
     }
 
     public void onBind(File data) {
-        textHeading.setText(data.getName());
+        textGallery.setText(data.getName());
     }
 }
