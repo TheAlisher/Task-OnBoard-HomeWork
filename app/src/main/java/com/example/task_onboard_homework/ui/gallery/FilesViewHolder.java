@@ -12,7 +12,7 @@ import java.io.File;
 
 public class FilesViewHolder extends RecyclerView.ViewHolder {
 
-    TextView textGallery;
+    private TextView textGallery;
 
     public FilesViewHolder(@NonNull View itemView) {
         super(itemView);

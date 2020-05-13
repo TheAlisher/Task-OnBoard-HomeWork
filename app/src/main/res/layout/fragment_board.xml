@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textHeading"
+        android:id="@+id/text_Heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -43,7 +43,7 @@
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textHeading" />
+        app:layout_constraintTop_toBottomOf="@+id/text_Heading" />
     <!--android:text="@string/hello_blank_fragment"-->
 
     <Button

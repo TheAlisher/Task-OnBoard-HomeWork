@@ -8,23 +8,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.example.task_onboard_homework.ui.home.HomeFragment;
-import com.example.task_onboard_homework.ui.home.TaskAdapter;
-import com.example.task_onboard_homework.ui.models.Task;
-import com.example.task_onboard_homework.ui.onboard.BoardFragment;
+import com.example.task_onboard_homework.ui.OnItemClickListener;
 import com.example.task_onboard_homework.ui.onboard.OnBoardActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -35,12 +25,15 @@ import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int REQUEST_CODE = 100;
+    private OnItemClickListener listener;
+
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (true) {
+        if (isShown()) {
             startActivity(new Intent(this, OnBoardActivity.class));
             /*finish();
             return;*/
@@ -52,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, FormActivity.class), 100);
+                startActivityForResult(new Intent(MainActivity.this, FormActivity.class), REQUEST_CODE);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -76,10 +69,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     private boolean isShown() {
         SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        return preferences.getBoolean("isShown", false);
+        return preferences.getBoolean("isShown", true);
     }
 
     @Override
@@ -100,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_exit:
+                SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
+                preferences.edit().putBoolean("isShown", true).apply();
                 finish();
                 return true;
             default:
@@ -107,17 +101,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override • PREVIOUS VERSION…
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 100 && data != null) {
-            /*Task task = (Task) data.getSerializableExtra(FormActivity.TASK_KEY);
-            Log.e("TAG", "title = " + task.getTitle());
-            Log.e("TAG", "title = " + task.getDesc());*/
+            //Task task = (Task) data.getSerializableExtra(FormActivity.TASK_KEY);
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             if (fragment != null) {
                 fragment.getChildFragmentManager().getFragments().get(0).onActivityResult(requestCode, resultCode, data);
             }
         }
-    }
+    }*/
 }

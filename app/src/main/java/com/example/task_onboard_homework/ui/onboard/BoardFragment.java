@@ -1,7 +1,6 @@
 package com.example.task_onboard_homework.ui.onboard;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -15,10 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.task_onboard_homework.MainActivity;
 import com.example.task_onboard_homework.R;
 
 /**
@@ -44,7 +41,7 @@ public class BoardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         int pos = getArguments().getInt("pos");
         ImageView imageView = view.findViewById(R.id.imageView);
-        TextView textHeading = view.findViewById(R.id.textHeading);
+        TextView textHeading = view.findViewById(R.id.text_Heading);
         TextView textDescription = view.findViewById(R.id.textDescription);
         Button getStart = view.findViewById(R.id.button_GetStarted);
         ConstraintLayout fragmentBoard = view.findViewById(R.id.fragment_board);
@@ -77,8 +74,6 @@ public class BoardFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         saveIsShown();
-                        /*Intent intent = new Intent(getContext(), MainActivity.class);
-                        startActivity(intent);*/
                         getActivity().finish();
                     }
                 });
@@ -89,7 +84,6 @@ public class BoardFragment extends Fragment {
 
     private void saveIsShown() {
         SharedPreferences preferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
-        preferences.edit().putBoolean("isShown", true).apply();
+        preferences.edit().putBoolean("isShown", false).apply();
     }
-
 }

@@ -6,7 +6,12 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/textHeading"
+        android:id="@+id/text_Heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
