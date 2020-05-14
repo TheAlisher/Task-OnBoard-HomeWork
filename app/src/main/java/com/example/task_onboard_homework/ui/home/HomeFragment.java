@@ -1,6 +1,5 @@
 package com.example.task_onboard_homework.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +38,6 @@ public class HomeFragment extends Fragment {
         adapter = new TaskAdapter(list);
         recyclerView.setAdapter(adapter);
         loadData();
-
     }
 
     private void loadData() {

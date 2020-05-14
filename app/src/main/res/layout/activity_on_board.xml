@@ -16,9 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/viewPager"
+        android:background="@color/Black"
         android:text="Skip→"
         android:textColor="@color/White"
-        android:background="@color/Black"
         android:textSize="10sp" />
 
     <com.google.android.material.tabs.TabLayout
@@ -29,5 +29,6 @@
         app:tabBackground="@drawable/tab_selector"
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp" />
+
 
 </RelativeLayout>
