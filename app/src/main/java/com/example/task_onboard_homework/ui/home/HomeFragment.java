@@ -41,7 +41,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadData() {
-        App.getInstance()
+        App
+                .getInstance()
                 .getDatabase()
                 .taskDao()
                 .getAllLive()
@@ -60,6 +61,7 @@ public class HomeFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         Task task = (Task) data.getSerializableExtra(FormActivity.TASK_KEY);
         list.add(task);
+        adapter.update(list);
         adapter.notifyDataSetChanged();
     }*/
 }

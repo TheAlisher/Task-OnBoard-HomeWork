@@ -3,7 +3,6 @@ package com.example.task_onboard_homework;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,15 +39,20 @@ public class FormActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        String title = editTitle.getText().toString().trim();   // trim - убирание пробелов
-        String desc = editDesc.getText().toString().trim();
-        Task task = new Task(title, desc);
-        App.getInstance().getDatabase().taskDao().insert(task);
-        /*Intent intent = new Intent();
-        intent.putExtra(TASK_KEY, task); • PREVIOUS VERSION…
-        setResult(RESULT_OK, intent);*/
-        finish();
         if (getIntent().getSerializableExtra(TaskAdapter.EDIT_TEXT_KEY) != null) {
+            Task editTask = new Task(editTitle.getText().toString(), editDesc.getText().toString());
+            Integer position = getIntent().getIntExtra(TaskAdapter.POSITION_KEY, 1);
+            App.getInstance().getDatabase().taskDao().updateSalaryByIdList
+                    (position, editTask.getTitle(), editTask.getDesc());
+            finish();
+        } else {
+            String title = editTitle.getText().toString().trim();   // trim - убирание пробелов
+            String desc = editDesc.getText().toString().trim();
+            Task task = new Task(title, desc);
+            App.getInstance().getDatabase().taskDao().insert(task);
+            /*Intent intent = new Intent();
+            intent.putExtra(TASK_KEY, task); •PREVIOUS VERSION…
+            setResult(RESULT_OK, intent);*/
             finish();
         }
     }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     public static final String EDIT_TEXT_KEY = "edit_text_key";
+    public static final String POSITION_KEY = "position_key";
     private ArrayList<Task> list;
     private OnItemClickListener onItemClickListener;
 
@@ -69,10 +70,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), FormActivity.class);
-                    Task task = new Task();
-                    task.setTitle(textHeading.getText().toString());
-                    task.setDesc(textDescription.getText().toString());
+                    Task task = new Task(textHeading.getText().toString(), textDescription.getText().toString());
+                    int position = list.get(getAdapterPosition()).getId();
                     intent.putExtra(EDIT_TEXT_KEY, task);
+                    intent.putExtra(POSITION_KEY, position);
                     v.getContext().startActivity(intent);
                 }
             });
@@ -87,8 +88,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    int pos = list.get(getAdapterPosition()).getId();
-                                    App.getInstance().getDatabase().taskDao().deleteById(pos);
+                                    int position = list.get(getAdapterPosition()).getId();
+                                    App.getInstance().getDatabase().taskDao().deleteById(position);
                                 }
                             })
                             .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

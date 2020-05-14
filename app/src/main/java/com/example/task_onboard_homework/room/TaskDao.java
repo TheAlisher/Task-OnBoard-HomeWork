@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.task_onboard_homework.ui.models.Task;
 
@@ -23,4 +24,10 @@ public interface TaskDao {
 
     @Query("DELETE from task WHERE id IN (:ID)")
     void deleteById(int ID);
+
+    @Update
+    void update(Task task);
+
+    @Query("UPDATE task Set title = :newTitle, `desc` = :newDesc WHERE id IN (:IDList)")
+    void updateSalaryByIdList(int IDList, String newTitle, String newDesc);
 }
