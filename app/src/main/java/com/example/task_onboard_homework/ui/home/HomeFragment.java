@@ -73,6 +73,8 @@ public class HomeFragment extends Fragment {
         list.clear();
         list.addAll(App.getInstance().getDatabase().taskDao().getAll());
         adapter.notifyDataSetChanged();
+        LayoutManagerTask.setReverseLayout(true);
+        LayoutManagerTask.setStackFromEnd(true);
     }
 
     /*@Override • PREVIOUS VERSION…
