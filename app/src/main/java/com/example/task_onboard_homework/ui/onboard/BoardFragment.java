@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.task_onboard_homework.R;
 
 /**
@@ -40,15 +41,17 @@ public class BoardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         int pos = getArguments().getInt("pos");
-        ImageView imageView = view.findViewById(R.id.imageView);
+        /*ImageView imageView = view.findViewById(R.id.imageView);*/ //PV…
         TextView textHeading = view.findViewById(R.id.text_Heading);
         TextView textDescription = view.findViewById(R.id.textDescription);
         Button getStart = view.findViewById(R.id.button_GetStarted);
         ConstraintLayout fragmentBoard = view.findViewById(R.id.fragment_board);
+        LottieAnimationView animationView = view.findViewById(R.id.animation);
 
         switch (pos) {
             case 0:
-                imageView.setImageResource(R.drawable.image_apple_tv);
+                /*imageView.setImageResource(R.drawable.image_apple_tv);*/ //PV…
+                animationView.setAnimation(R.raw.apple_logo);
                 textHeading.setText("Покупайте. Берите напрокат. Смотрите. Всё в одном приложении.");
                 textDescription.setText("Представляем новую видеотеку, в которой собраны тысячи фильмов, " +
                         "включая свежие блокбастеры. Теперь их можно покупать, " +
@@ -58,7 +61,8 @@ public class BoardFragment extends Fragment {
                 fragmentBoard.setBackgroundResource(R.drawable.image_stories_1);
                 break;
             case 1:
-                imageView.setImageResource(R.drawable.image_apple_tv_plus);
+                /*imageView.setImageResource(R.drawable.image_apple_tv_plus);*/ //PV…
+                animationView.setAnimation(R.raw.apple_products);
                 textHeading.setText("Вселенная кино у вас под рукой");
                 textDescription.setText("Сервис Apple TV+ - " +
                         "это признанные критиками оригинальные фильмы и сериалы от Apple, " +
@@ -67,8 +71,9 @@ public class BoardFragment extends Fragment {
                 fragmentBoard.setBackgroundResource(R.drawable.image_stories_15);
                 break;
             case 2:
+                /*imageView.setImageResource(R.drawable.image_apple_tv_4k_remote);*/ //PV…
+                animationView.setAnimation(R.raw.steve_jobs);
                 textHeading.setText("Приложение Apple TV");
-                imageView.setImageResource(R.drawable.image_apple_tv_4k_remote);
                 textDescription.setText("Смотрите всё в одном приложении.");
                 getStart.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,10 +42,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         holder.onBind(list.get(position));
         holder.setIsRecyclable(true);
-        if (position % 2 == 1) {
-            holder.itemView.setBackgroundResource(R.color.White);
+        if (position % 2 == 0) {
+            holder.linearLayout.setBackgroundResource(R.color.White);
         } else {
-            holder.itemView.setBackgroundResource(R.color.Gray);
+            holder.linearLayout.setBackgroundResource(R.color.LightGrey);
         }
     }
 
@@ -61,11 +62,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         private TextView textHeading;
         private TextView textDescription;
+        private LinearLayout linearLayout;
 
         public TaskViewHolder(@NonNull final View itemView) {
             super(itemView);
             textHeading = itemView.findViewById(R.id.text_Heading);
             textDescription = itemView.findViewById(R.id.text_Description);
+            linearLayout = itemView.findViewById(R.id.linearLayout_in_listTask);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -99,7 +102,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                                 }
                             });
                     deleteDialog.show();
-                    return false;
+                    return true;
                 }
             });
         }

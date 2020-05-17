@@ -23,6 +23,7 @@ public class HomeFragment extends Fragment {
 
     private TaskAdapter adapter;
     private ArrayList<Task> list = new ArrayList<>();
+    LinearLayoutManager LayoutManagerTask;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +38,10 @@ public class HomeFragment extends Fragment {
         list.addAll(App.getInstance().getDatabase().taskDao().getAll());
         adapter = new TaskAdapter(list);
         recyclerView.setAdapter(adapter);
+        LayoutManagerTask = new LinearLayoutManager(getContext());
+        LayoutManagerTask.setReverseLayout(true);
+        LayoutManagerTask.setStackFromEnd(true);
+        recyclerView.setLayoutManager(LayoutManagerTask);
         loadData();
     }
 
@@ -54,6 +59,20 @@ public class HomeFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+    public void sortList() {
+        list.clear();
+        list.addAll(App.getInstance().getDatabase().taskDao().sort());
+        adapter.notifyDataSetChanged();
+        LayoutManagerTask.setReverseLayout(false);
+        LayoutManagerTask.setStackFromEnd(false);
+    }
+
+    public void initList() {
+        list.clear();
+        list.addAll(App.getInstance().getDatabase().taskDao().getAll());
+        adapter.notifyDataSetChanged();
     }
 
     /*@Override • PREVIOUS VERSION…

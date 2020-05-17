@@ -4,17 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
-import com.example.task_onboard_homework.ui.OnItemClickListener;
+import com.example.task_onboard_homework.ui.home.HomeFragment;
 import com.example.task_onboard_homework.ui.onboard.OnBoardActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -26,7 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 100;
-    private OnItemClickListener listener;
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -96,8 +95,24 @@ public class MainActivity extends AppCompatActivity {
                 preferences.edit().putBoolean("isShown", true).apply();
                 finish();
                 return true;
+            case R.id.action_sort:
+                sort();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private boolean flag;
+    public void sort() {
+        if (flag) {
+            Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            ((HomeFragment) navHostFragment.getChildFragmentManager().getFragments().get(0)).sortList();
+            flag = false;
+        } else {
+            Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            ((HomeFragment) navHostFragment.getChildFragmentManager().getFragments().get(0)).initList();
+            flag = true;
         }
     }
 

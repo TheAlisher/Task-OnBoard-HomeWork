@@ -40,13 +40,16 @@ public class FormActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         if (getIntent().getSerializableExtra(TaskAdapter.EDIT_TEXT_KEY) != null) {
-            Task editTask = new Task(editTitle.getText().toString(), editDesc.getText().toString());
             Integer position = getIntent().getIntExtra(TaskAdapter.POSITION_KEY, 1);
             App.getInstance().getDatabase().taskDao().updateSalaryByIdList
-                    (position, editTask.getTitle(), editTask.getDesc());
+                    (position, editTitle.getText().toString(), editDesc.getText().toString());
             finish();
         } else {
             String title = editTitle.getText().toString().trim();   // trim - убирание пробелов
+            if (title.isEmpty()) {
+                editTitle.setError("Введите задачу");
+                return;
+            }
             String desc = editDesc.getText().toString().trim();
             Task task = new Task(title, desc);
             App.getInstance().getDatabase().taskDao().insert(task);

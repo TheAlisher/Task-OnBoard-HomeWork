@@ -11,5 +11,9 @@
         android:id="@+id/action_exit"
         android:title="@string/action_exit" />
 
+    <item
+        android:id="@+id/action_sort"
+        android:title="@string/action_sort" />
+
 
 </menu>
