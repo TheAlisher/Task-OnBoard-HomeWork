@@ -8,10 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.task_onboard_homework.login.PhoneActivity;
 import com.example.task_onboard_homework.ui.home.HomeFragment;
 import com.example.task_onboard_homework.ui.onboard.OnBoardActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -36,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, OnBoardActivity.class));
             /*finish(); • PREVIOUS VERSION…
             return;*/
+        }
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, PhoneActivity.class));
+            finish();
+            return;
         }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -108,12 +115,11 @@ public class MainActivity extends AppCompatActivity {
         if (flag) {
             Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             ((HomeFragment) navHostFragment.getChildFragmentManager().getFragments().get(0)).sortList();
-            flag = false;
         } else {
             Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             ((HomeFragment) navHostFragment.getChildFragmentManager().getFragments().get(0)).initList();
-            flag = true;
         }
+        flag = !flag;
     }
 
     /*@Override • PREVIOUS VERSION…
