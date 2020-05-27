@@ -14,6 +14,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_favorite">Favorite</string>
     <string name="menu_watch_later">Watch later</string>
+    <string name="menu_firestore">Firestore</string>
 
     <string name="home_second">Home Second</string>
 

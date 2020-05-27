@@ -8,13 +8,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.task_onboard_homework.ui.home.TaskAdapter;
 import com.example.task_onboard_homework.ui.models.Task;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FormActivity extends AppCompatActivity {
 
-    /*public static final String TASK_KEY = "task_key"; • PREVIOUS VERSION*/
+    /*public static final String TASK_KEY = "task_key";*/   //PV…
     EditText editTitle;
     EditText editDesc;
 
@@ -43,9 +50,8 @@ public class FormActivity extends AppCompatActivity {
             Integer position = getIntent().getIntExtra(TaskAdapter.POSITION_KEY, 1);
             App.getInstance().getDatabase().taskDao().updateSalaryByIdList
                     (position, editTitle.getText().toString(), editDesc.getText().toString());
-            finish();
         } else {
-            String title = editTitle.getText().toString().trim();   // trim - убирание пробелов
+            String title = editTitle.getText().toString().trim();
             if (title.isEmpty()) {
                 editTitle.setError("Введите задачу");
                 return;
@@ -54,10 +60,27 @@ public class FormActivity extends AppCompatActivity {
             Task task = new Task(title, desc);
             App.getInstance().getDatabase().taskDao().insert(task);
             /*Intent intent = new Intent();
-            intent.putExtra(TASK_KEY, task); •PREVIOUS VERSION…
+            intent.putExtra(TASK_KEY, task);   //PV…
             setResult(RESULT_OK, intent);*/
-            finish();
         }
+        String title = editTitle.getText().toString().trim();
+        String desc = editDesc.getText().toString().trim();
+        Map<String, Object> map = new HashMap<>();   //PV…
+        map.put("title", title);
+        map.put("desc", desc);
+        FirebaseFirestore.getInstance().collection("tasks")
+                .add(map)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentReference> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(FormActivity.this, "Успешно", Toast.LENGTH_SHORT);
+                        } else {
+                            Toast.makeText(FormActivity.this, "Ошибка", Toast.LENGTH_SHORT);
+                        }
+                    }
+                });
+        finish();
     }
 
     @Override

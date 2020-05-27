@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
         LayoutManagerTask.setStackFromEnd(true);
     }
 
-    /*@Override • PREVIOUS VERSION…
+    /*@Override   //PV…
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Task task = (Task) data.getSerializableExtra(FormActivity.TASK_KEY);

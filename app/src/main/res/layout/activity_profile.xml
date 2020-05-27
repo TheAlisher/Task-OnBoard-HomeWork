@@ -8,19 +8,22 @@
     android:padding="20dp"
     tools:context=".ProfileActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/nav_header_title"
-        android:textColor="@color/Black"
-        android:textSize="20sp" />
+    <ImageView
+        android:id="@+id/image_profile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:onClick="imageProfile_click"
+        android:src="@drawable/default_profile_image" />
 
-    <TextView
+    <EditText
+        android:id="@+id/editName"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nav_header_subtitle"
-        android:textColor="@color/Black"
-        android:textSize="20sp" />
+        android:onClick="onClick" />
 
 
 </LinearLayout>

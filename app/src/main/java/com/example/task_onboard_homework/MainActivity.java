@@ -36,14 +36,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (isShown()) {
             startActivity(new Intent(this, OnBoardActivity.class));
-            /*finish(); • PREVIOUS VERSION…
-            return;*/
-        }
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startActivity(new Intent(this, PhoneActivity.class));
             finish();
             return;
         }
+        /*if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, PhoneActivity.class));
+            finish();
+            return;
+        }*/
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_firestore)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean flag;
+    private boolean flag = true;
     public void sort() {
         if (flag) {
             Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         flag = !flag;
     }
 
-    /*@Override • PREVIOUS VERSION…
+    /*@Override   //PV…
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 100 && data != null) {

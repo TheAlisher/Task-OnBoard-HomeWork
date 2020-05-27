@@ -71,7 +71,9 @@ public class PhoneActivity extends AppCompatActivity {
                 Log.e("Phone", "onCodeSent");
                 verificationID = s;
                 lottieAnimationRegistration.setVisibility(View.GONE);
+                lottieAnimationDesign.setVisibility(View.VISIBLE);
                 lottieAnimationDesign.setAnimation(R.raw.enter_code);
+                lottieAnimationDesign.playAnimation();
                 editCode.setVisibility(View.VISIBLE);
                 verify.setVisibility(View.VISIBLE);
             }
@@ -91,7 +93,6 @@ public class PhoneActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                         } else {
-
                             Log.e("Phone", "Error = " + task.getException().getMessage());
                             Toast.makeText(PhoneActivity.this, "Ошибка авторизации", Toast.LENGTH_SHORT).show();
                         }
@@ -109,13 +110,12 @@ public class PhoneActivity extends AppCompatActivity {
         send.setVisibility(View.GONE);
         countryPhoneCode.setVisibility(View.GONE);
         lottieAnimationRegistration.setAnimation(R.raw.loading);
-        lottieAnimationDesign.setVisibility(View.GONE);
+        lottieAnimationDesign.setVisibility(View.INVISIBLE);
     }
 
     public void verifyClick(View view) {
         String code = editCode.getText().toString().trim();
         if (code.isEmpty() || code.length() < 6) {
-            editCode.requestFocus();
             return;
         }
         verifyCode(code);

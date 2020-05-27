@@ -40,4 +40,11 @@
         android:name="com.example.task_onboard_homework.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_watch_later"
         tools:layout="@layout/fragment_watch_later" />
+
+    <fragment
+        android:id="@+id/nav_firestore"
+        android:name="com.example.task_onboard_homework.ui.firestore.FirestoreFragment"
+        android:label="@string/menu_firestore"
+        tools:layout="@layout/fragment_firestore" />
+
 </navigation>
