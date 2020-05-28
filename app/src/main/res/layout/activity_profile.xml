@@ -8,11 +8,11 @@
     android:padding="20dp"
     tools:context=".ProfileActivity">
 
-    <ImageView
-        android:id="@+id/image_profile"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageProfile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:onClick="imageProfile_click"
+        android:onClick="imageProfileClick"
         android:src="@drawable/default_profile_image" />
 
     <EditText

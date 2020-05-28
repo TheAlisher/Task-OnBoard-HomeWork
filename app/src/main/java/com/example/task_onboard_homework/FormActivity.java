@@ -24,6 +24,7 @@ public class FormActivity extends AppCompatActivity {
     /*public static final String TASK_KEY = "task_key";*/   //PV…
     EditText editTitle;
     EditText editDesc;
+    private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +58,14 @@ public class FormActivity extends AppCompatActivity {
                 return;
             }
             String desc = editDesc.getText().toString().trim();
-            Task task = new Task(title, desc);
+            task = new Task(title, desc);
             App.getInstance().getDatabase().taskDao().insert(task);
             /*Intent intent = new Intent();
             intent.putExtra(TASK_KEY, task);   //PV…
             setResult(RESULT_OK, intent);*/
         }
-        String title = editTitle.getText().toString().trim();
-        String desc = editDesc.getText().toString().trim();
-        Map<String, Object> map = new HashMap<>();   //PV…
-        map.put("title", title);
-        map.put("desc", desc);
         FirebaseFirestore.getInstance().collection("tasks")
-                .add(map)
+                .add(task)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentReference> task) {

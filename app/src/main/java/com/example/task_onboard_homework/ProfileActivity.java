@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.task_onboard_homework.ui.models.User;
@@ -24,14 +23,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private static final int SELECT_IMAGE = 21;
     private EditText editName;
-    private ImageView imageProfile;
+    private CircleImageView imageProfile;
     private Bitmap bitmap;
 
     @Override
@@ -39,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         editName = findViewById(R.id.editName);
-        imageProfile = findViewById(R.id.image_profile);
+        imageProfile = findViewById(R.id.imageProfile);
         /*getData();*/
         getData2();
     }
@@ -110,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
                 });*/
     }
 
-    public void imageProfile_click(View view) {
+    public void imageProfileClick(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -129,5 +128,12 @@ public class ProfileActivity extends AppCompatActivity {
         } else if (resultCode == Activity.RESULT_CANCELED) {
             Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
         }
-    }
+    } // OR
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SELECT_IMAGE && resultCode == RESULT_OK && data.getData() != null){
+            imageProfile.setImageURI(data.getData());
+        }
+    }*/
 }
