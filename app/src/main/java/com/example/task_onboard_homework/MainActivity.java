@@ -7,15 +7,22 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.task_onboard_homework.login.PhoneActivity;
+import com.bumptech.glide.Glide;
 import com.example.task_onboard_homework.ui.home.HomeFragment;
+import com.example.task_onboard_homework.ui.models.User;
 import com.example.task_onboard_homework.ui.onboard.OnBoardActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,6 +35,8 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 100;
+    private ImageView imageHeader;
+    private TextView textHeader;
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -44,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }*/
+        getData();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,6 +84,30 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        View view = navigationView.getHeaderView(0);
+        imageHeader = view.findViewById(R.id.imageView);
+        textHeader = view.findViewById(R.id.textFullName);
+    }
+
+    private void getData() {
+        String uid = /*FirebaseAuth.getInstance().getUid()*/ "alisherUserID";
+        FirebaseFirestore.getInstance().collection("users")
+                .document(uid)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (documentSnapshot.exists()) {
+                            User user = documentSnapshot.toObject(User.class);
+                            textHeader.setText(user.getName());
+                            setImage(user.getAvatar());
+                        }
+                    }
+                });
+    }
+
+    private void setImage(String avatar) {
+        Glide.with(this).load(avatar).circleCrop().into(imageHeader);
     }
 
     private boolean isShown() {
@@ -111,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean flag = true;
+
     public void sort() {
         if (flag) {
             Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -121,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
         }
         flag = !flag;
     }
+
+
 
     /*@Override   //PV…
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -85,7 +85,7 @@ public class FormActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
-    } // OR
+    } // or
     /*@Override
     public boolean onSupportNavigateUp() {
         finish();

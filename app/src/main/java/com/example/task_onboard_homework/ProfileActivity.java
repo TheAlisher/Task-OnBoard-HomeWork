@@ -4,16 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.task_onboard_homework.ui.models.User;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,8 +23,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import java.io.IOException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,7 +34,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static final int SELECT_IMAGE = 21;
     private EditText editName;
     private CircleImageView imageProfile;
-    private Bitmap bitmap;
+    private ProgressBar progressBar;
+    private String avatarUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         editName = findViewById(R.id.editName);
         imageProfile = findViewById(R.id.imageProfile);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
         /*getData();*/
         getData2();
     }
@@ -53,9 +59,14 @@ public class ProfileActivity extends AppCompatActivity {
                         if (documentSnapshot.exists()) {
                             User user = documentSnapshot.toObject(User.class);
                             editName.setText(user.getName());
+                            showImage(user.getAvatar());
                         }
                     }
                 });
+    }
+
+    private void showImage(String avatar) {
+        Glide.with(this).load(avatar).circleCrop().into(imageProfile);
     }
 
     private void getData() {
@@ -78,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void onClick(View view) {
         String uid = FirebaseAuth.getInstance().getUid();
         String name = editName.getText().toString().trim();
-        User user = new User(name, 18, null);
+        User user = new User(name, 18, avatarUrl);
         /*Map<String, Object> map = new HashMap<>();   //PV…
         map.put("name", "Alisher");
         map.put("age", 18);
@@ -112,28 +123,61 @@ public class ProfileActivity extends AppCompatActivity {
     public void imageProfileClick(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_GET_CONTENT); // or ACTION_PICK для изображений
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SELECT_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
-            } catch (IOException ioE) {
-                ioE.printStackTrace();
-            }
-            imageProfile.setImageBitmap(bitmap);
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-            Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
-        }
-    } // OR
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == SELECT_IMAGE && resultCode == RESULT_OK && data.getData() != null){
-            imageProfile.setImageURI(data.getData());
+        if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK && data.getData() != null) {
+            Glide.with(this).load(data.getData()).circleCrop().into(imageProfile);
+            upload(data.getData());
         }
-    }*/
+    }
+
+    private void upload(Uri data) {
+        progressBar.setVisibility(View.VISIBLE);
+        String uid = /*FirebaseAuth.getInstance().getUid()*/ "alisherUserID";
+        final StorageReference reference =
+                FirebaseStorage.getInstance().getReference().child(uid + ".jpg");
+        UploadTask uploadTask = reference.putFile(data);
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                return reference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUrl = task.getResult();
+                    Log.e("Profile", "downloadUrl " + downloadUrl);
+                    avatarUrl = downloadUrl.toString();
+                    updateAvatarInfo(downloadUrl);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(ProfileActivity.this, "Ошибка", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void updateAvatarInfo(Uri downloadUrl) {
+        String uid = /*FirebaseAuth.getInstance().getUid()*/ "alisherUserID";
+        FirebaseFirestore.getInstance().collection("users")
+                .document(uid)
+                .update("avatar", downloadUrl.toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        progressBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ProfileActivity.this, "Успешно", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Ошибка", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 }
