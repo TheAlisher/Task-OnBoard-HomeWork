@@ -8,17 +8,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.task_onboard_homework.R;
 import com.example.task_onboard_homework.ui.models.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -46,7 +44,17 @@ public class FirestoreFragment extends Fragment {
     private void getTasks() {
         String uid = /*FirebaseAuth.getInstance().getUid()*/ "alisherUserID";
         FirebaseFirestore.getInstance().collection("tasks")
-                .document(uid)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot snapshots) {
+                        if (snapshots != null) {
+                            list.addAll(snapshots.toObjects(Task.class));
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+              /*.document(uid)   PV…
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -58,6 +66,6 @@ public class FirestoreFragment extends Fragment {
                                     task.getTitle() + " " + task.getDesc());
                         }
                     }
-                });
+                });*/
     }
 }

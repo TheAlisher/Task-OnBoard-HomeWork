@@ -3,6 +3,7 @@ package com.example.task_onboard_homework.login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.task_onboard_homework.MainActivity;
 import com.example.task_onboard_homework.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -119,6 +121,7 @@ public class PhoneActivity extends AppCompatActivity {
             return;
         }
         verifyCode(code);
-        finish();
+        startActivity(new Intent(this, MainActivity.class));
+        this.finish();
     }
 }
